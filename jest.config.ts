@@ -9,6 +9,9 @@ const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
   testMatch: ['<rootDir>/src/tests/**/*.(test|spec).{js,jsx,ts,tsx}'],
+  globals: {
+    fetch: global.fetch,
+  },
 };
 
 export default createJestConfig(config);
