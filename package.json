@@ -22,7 +22,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint:prettier:check": "prettier --check .",
+    "lint:prettier:fix": "prettier --write .",
+    "lint:eslint:check": "eslint .",
+    "lint:eslint:fix": "eslint . --fix",
+    "lint": "npm run lint:prettier:check && npm run lint:eslint:check",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "next": "16.1.6",
@@ -30,8 +37,14 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "25.2.3",
     "@types/react": "19.2.14",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.1.6",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "3.8.1",
+    "ts-node": "^10.9.2",
     "typescript": "5.9.3"
   }
 }
