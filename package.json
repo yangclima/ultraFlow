@@ -1,0 +1,37 @@
+{
+  "name": "ultraflow",
+  "version": "1.0.0",
+  "description": "Ultralearning based learning flux",
+  "keywords": [
+    "Ultralearning",
+    "learning",
+    "saas"
+  ],
+  "homepage": "https://github.com/yangclima/ultraFlow#readme",
+  "bugs": {
+    "url": "https://github.com/yangclima/ultraFlow/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangclima/ultraFlow.git"
+  },
+  "license": "MIT",
+  "author": "yangclima",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "16.1.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "25.2.3",
+    "@types/react": "19.2.14",
+    "typescript": "5.9.3"
+  }
+}
