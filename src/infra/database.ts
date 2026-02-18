@@ -14,15 +14,14 @@ async function query(queryObject) {
 }
 
 function getSSLValues() {
-  if (process.env.POSTGRES_CA) {
+  if (process.env.NODE_ENV === 'production') {
     return {
       ca: process.env.POSTGRES_CA,
+      rejectUnauthorized: true,
     };
   }
 
-  return {
-    rejectUnauthorized: process.env.NODE_ENV === 'production' ? true : false,
-  };
+  return false;
 }
 
 async function getNewClient() {
