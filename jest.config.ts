@@ -1,6 +1,10 @@
 import type { Config } from 'jest';
 import nextJest from 'next/jest.js';
 
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.development', quiet: true });
+
 const createJestConfig = nextJest({
   dir: './',
 });
@@ -8,7 +12,6 @@ const createJestConfig = nextJest({
 const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/src/tests/jest.setup.ts'],
   testMatch: ['<rootDir>/src/tests/**/*.(test|spec).{js,jsx,ts,tsx}'],
 };
 
