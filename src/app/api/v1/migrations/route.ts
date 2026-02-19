@@ -44,7 +44,9 @@ export async function POST() {
       direction: 'up',
       migrationsTable: 'pgmigrations',
       verbose: true,
-      log: () => {},
+      log: (msg) => {
+        console.log(msg);
+      },
     } as const;
 
     const migratedMigrations = await runner(migrationOptions);
@@ -53,7 +55,7 @@ export async function POST() {
       return Response.json(migratedMigrations, { status: 201 });
     }
 
-    return Response.json({ message: 'No migrations to run' }, { status: 200 });
+    return Response.json(migratedMigrations, { status: 200 });
   } catch (error) {
     console.error(error);
     throw error;

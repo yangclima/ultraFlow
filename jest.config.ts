@@ -8,6 +8,7 @@ const createJestConfig = nextJest({
 const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'node',
+  setupFilesAfterEnv: ['<rootDir>/src/tests/jest.setup.ts'],
   testMatch: ['<rootDir>/src/tests/**/*.(test|spec).{js,jsx,ts,tsx}'],
 };
 

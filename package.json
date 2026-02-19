@@ -28,15 +28,19 @@
     "lint:eslint:check": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "lint": "npm run lint:prettier:check && npm run lint:eslint:check",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "npm run services:up && concurrently -n next,jest --hide next -s command-jest -k \"next dev\" \"jest --runInBand --verbose\"",
+    "test:watch": "jest --watchAll --runInBand",
     "services:up": "docker compose -f ./src/infra/compose.yaml up -d",
     "services:stop": "docker compose -f ./src/infra/compose.yaml stop",
     "services:down": "docker compose -f ./src/infra/compose.yaml down",
     "migrations:create": "node-pg-migrate -m ./src/infra/migrations create",
-    "migrations:up": "node-pg-migrate -m ./src/infra/migrations --env-path .env.development up"
+    "migrations:up": "node-pg-migrate -m ./src/infra/migrations --env-path .env.development up",
+    "scripts:wait-for-postgres": "node ./src/infra/scripts/wait-for-postgres.js"
   },
   "dependencies": {
+    "async-retry": "^1.3.3",
+    "concurrently": "^9.2.1",
+    "dotenv": "^17.3.1",
     "next": "16.1.6",
     "pg": "8.18.0",
     "react": "19.2.4",
@@ -45,7 +49,6 @@
   "devDependencies": {
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
-    "node-pg-migrate": "8.0.4",
     "@testing-library/react": "16.3.2",
     "@types/jest": "30.0.0",
     "@types/node": "25.2.3",
@@ -56,6 +59,7 @@
     "eslint-config-prettier": "10.1.8",
     "jest": "30.2.0",
     "jest-environment-jsdom": "30.2.0",
+    "node-pg-migrate": "8.0.4",
     "prettier": "3.8.1",
     "ts-node": "10.9.2",
     "typescript": "5.9.3"
