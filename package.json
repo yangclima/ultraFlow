@@ -20,7 +20,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run services:up && npm run scripts:wait-for-postgres && npm run migrations:up && next dev",
     "build": "next build",
     "start": "next start",
     "lint:prettier:check": "prettier --check .",

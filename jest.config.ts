@@ -12,6 +12,7 @@ const createJestConfig = nextJest({
 const config: Config = {
   coverageProvider: 'v8',
   testEnvironment: 'node',
+  testTimeout: 60000,
   testMatch: ['<rootDir>/src/tests/**/*.(test|spec).{js,jsx,ts,tsx}'],
 };
 
