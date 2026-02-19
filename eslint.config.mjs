@@ -12,7 +12,7 @@ const eslintConfig = defineConfig([
   },
   {
     files: ['**/*.js'],
-    ignores: ['src/**/*.js'],
+    ignores: ['src/tests/**/*.js'],
     plugins: {
       js,
     },
