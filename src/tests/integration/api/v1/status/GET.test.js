@@ -1,9 +1,8 @@
-import database from '@/infra/database';
 import orchestrator from '@/tests/orchestrator';
 
 beforeAll(async () => {
-  await database.query('DROP schema public cascade; CREATE schema public;');
   await orchestrator.waitForAllServices();
+  await orchestrator.clearDatabase();
 });
 
 describe('GET /api/v1/status', () => {
