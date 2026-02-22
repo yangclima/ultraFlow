@@ -22,6 +22,7 @@
   "scripts": {
     "dev": "npm run services:up && npm run services:wait-database && npm run migrations:up && next dev",
     "test": "npm run services:up && concurrently -n next,jest --hide next -s command-jest -k \"next dev\" \"jest --runInBand --verbose\"",
+    "posttest": "npm run services:down",
     "test:watch": "jest --watchAll --runInBand",
     "build": "next build",
     "start": "next start",
