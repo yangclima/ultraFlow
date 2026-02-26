@@ -21,41 +21,43 @@ function UpdatedAt() {
 }
 
 function DatabaseStatus() {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['status'],
     queryFn: fetchStatus,
     refetchInterval: 2000,
     refetchIntervalInBackground: false,
   });
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError || !data?.dependencies?.database)
-    return <p>Erro ao carregar status do banco.</p>;
+  const database = data?.dependencies.database;
 
-  const database = data.dependencies.database;
-
-  const databaseVersion = database.version;
-  const maxConnections = database.max_connections;
-  const openedConnections = database.opened_connections;
+  const databaseVersion = database?.version;
+  const maxConnections = database?.max_connections;
+  const openedConnections = database?.opened_connections;
 
   return (
     <div>
-      <h2>Database Status</h2>
+      <h2>Database</h2>
 
-      <div>
-        <span>Versão:</span>
-        <strong>{databaseVersion}</strong>
-      </div>
+      {isLoading && !data ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <div>
+            <span>Versão:</span>
+            <strong>{databaseVersion}</strong>
+          </div>
 
-      <div>
-        <span>Conexões abertas:</span>
-        <strong>{openedConnections}</strong>
-      </div>
+          <div>
+            <span>Conexões abertas:</span>
+            <strong>{openedConnections}</strong>
+          </div>
 
-      <div>
-        <span>Máximo de conexões:</span>
-        <strong>{maxConnections}</strong>
-      </div>
+          <div>
+            <span>Máximo de conexões:</span>
+            <strong>{maxConnections}</strong>
+          </div>
+        </>
+      )}
     </div>
   );
 }
