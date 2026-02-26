@@ -1,8 +1,9 @@
 'use client';
 
+import type { StatusResponse } from '@/contracts/api/v1/status';
 import { useQuery } from '@tanstack/react-query';
 
-async function fetchStatus() {
+async function fetchStatus(): Promise<StatusResponse> {
   const response = await fetch('/api/v1/status');
   const data = await response.json();
   return data;
@@ -17,7 +18,7 @@ function UpdatedAt() {
 
   const updatedAt = new Date(data?.updated_at).toLocaleString('pt-BR');
 
-  return isLoading ? <p>Loading...</p> : <p>Updated at: {updatedAt}</p>;
+  return isLoading ? <p>Loading...</p> : <p>Atualizado em: {updatedAt}</p>;
 }
 
 function DatabaseStatus() {
