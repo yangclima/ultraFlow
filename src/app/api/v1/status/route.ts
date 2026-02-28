@@ -1,3 +1,5 @@
+import type { StatusResponse } from '@/contracts/api/v1/status';
+
 import database from '@/infra/database';
 
 export async function GET() {
@@ -23,5 +25,5 @@ export async function GET() {
         opened_connections: openedConnectionsResult,
       },
     },
-  });
+  } satisfies StatusResponse);
 }
