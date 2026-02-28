@@ -16,9 +16,18 @@ function UpdatedAt() {
     refetchInterval: 2000,
   });
 
-  const updatedAt = new Date(data?.updated_at).toLocaleString('pt-BR');
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
-  return isLoading ? <p>Loading...</p> : <p>Atualizado em: {updatedAt}</p>;
+  const updatedAt = new Date(data.updated_at).toLocaleString('pt-BR');
+
+  return (
+    <div>
+      <span>Atualizado em: </span>
+      <strong>{updatedAt}</strong>
+    </div>
+  );
 }
 
 function DatabaseStatus() {
@@ -29,6 +38,10 @@ function DatabaseStatus() {
     refetchIntervalInBackground: false,
   });
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   const database = data?.dependencies.database;
 
   const databaseVersion = database?.version;
@@ -37,28 +50,20 @@ function DatabaseStatus() {
 
   return (
     <div>
-      <h2>Database</h2>
+      <div>
+        <span>Versão: </span>
+        <strong>{databaseVersion}</strong>
+      </div>
 
-      {isLoading && !data ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div>
-            <span>Versão:</span>
-            <strong>{databaseVersion}</strong>
-          </div>
+      <div>
+        <span>Conexões abertas: </span>
+        <strong>{openedConnections}</strong>
+      </div>
 
-          <div>
-            <span>Conexões abertas:</span>
-            <strong>{openedConnections}</strong>
-          </div>
-
-          <div>
-            <span>Máximo de conexões:</span>
-            <strong>{maxConnections}</strong>
-          </div>
-        </>
-      )}
+      <div>
+        <span>Máximo de conexões: </span>
+        <strong>{maxConnections}</strong>
+      </div>
     </div>
   );
 }
@@ -68,6 +73,7 @@ export default function StatusPage() {
     <>
       <h1>Status</h1>
       <UpdatedAt />
+      <h2>Database</h2>
       <DatabaseStatus />
     </>
   );
