@@ -1,11 +1,30 @@
-import database from '@/infra/database';
-import { runner } from 'node-pg-migrate';
-import path from 'node:path';
-
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type {
+  MigrationsGetResponse,
+  MigrationsPostResponse,
+} from '@/contracts/api/v1/migrations';
 import type { Client } from 'pg';
 
-export async function GET() {
-  let dbClient: Client;
+import database from '@/infra/database';
+import controller from '@/infra/controller';
+
+import { runner } from 'node-pg-migrate';
+import path from 'node:path';
+import { createRouter } from 'next-connect';
+
+const router = createRouter();
+
+router.get(getHandler);
+
+router.post(postHandler);
+
+export default router.handler(controller.errorHandlers);
+
+export async function getHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<MigrationsGetResponse>
+) {
+  let dbClient: Client | undefined = undefined;
 
   try {
     dbClient = await database.getNewClient();
@@ -22,7 +41,7 @@ export async function GET() {
 
     const migratedMigrations = await runner(migrationOptions);
 
-    return Response.json(migratedMigrations, { status: 200 });
+    return res.status(200).json(migratedMigrations);
   } catch (error) {
     console.error(error);
     throw error;
@@ -31,8 +50,11 @@ export async function GET() {
   }
 }
 
-export async function POST() {
-  let dbClient: Client;
+export async function postHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<MigrationsPostResponse>
+) {
+  let dbClient: Client | undefined = undefined;
 
   try {
     dbClient = await database.getNewClient();
@@ -52,10 +74,10 @@ export async function POST() {
     const migratedMigrations = await runner(migrationOptions);
 
     if (migratedMigrations.length > 0) {
-      return Response.json(migratedMigrations, { status: 201 });
+      return res.status(201).json(migratedMigrations);
     }
 
-    return Response.json(migratedMigrations, { status: 200 });
+    return res.status(200).json(migratedMigrations);
   } catch (error) {
     console.error(error);
     throw error;
