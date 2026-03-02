@@ -16,7 +16,7 @@ function UpdatedAt() {
     refetchInterval: 2000,
   });
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <p>Loading...</p>;
   }
 
