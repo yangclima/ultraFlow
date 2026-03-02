@@ -1,4 +1,4 @@
-import { Client, Query } from 'pg';
+import { Client } from 'pg';
 import { ServiceError } from './errors';
 
 async function query(queryObject: string) {
