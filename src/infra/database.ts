@@ -1,8 +1,8 @@
-import { Client, Query } from 'pg';
+import { Client } from 'pg';
 import { ServiceError } from './errors';
 
 async function query(queryObject: string) {
-  let client = await getNewClient();
+  let client;
 
   try {
     client = await getNewClient();
@@ -17,6 +17,7 @@ async function query(queryObject: string) {
 
     throw serviceErrorObject;
   } finally {
+    console.log('Fechando conexão com o banco de dados');
     client?.end();
   }
 }
