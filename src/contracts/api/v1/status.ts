@@ -1,4 +1,4 @@
-export type StatusResponse = {
+export type StatusGetResponse = {
   updated_at: string;
   dependencies: {
     database: {
