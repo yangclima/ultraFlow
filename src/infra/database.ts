@@ -1,15 +1,23 @@
 import { Client } from 'pg';
+import { ServiceError } from './errors';
 
-async function query(queryObject) {
-  const client = await getNewClient();
+async function query(queryObject: string) {
+  let client = await getNewClient();
 
   try {
+    client = await getNewClient();
+
     const result = await client.query(queryObject);
     return result;
   } catch (error) {
-    console.error(error);
+    const serviceErrorObject = new ServiceError({
+      message: 'Erro ao realizar consulta no banco de dados',
+      cause: error,
+    });
+
+    throw serviceErrorObject;
   } finally {
-    client.end();
+    client?.end();
   }
 }
 
@@ -25,18 +33,26 @@ function getSSLValues() {
 }
 
 async function getNewClient() {
-  const client = new Client({
-    host: process.env.POSTGRES_HOST,
-    port: Number(process.env.POSTGRES_PORT),
-    user: process.env.POSTGRES_USER,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    ssl: getSSLValues(),
-  });
+  try {
+    const client = new Client({
+      host: process.env.POSTGRES_HOST,
+      port: Number(process.env.POSTGRES_PORT),
+      user: process.env.POSTGRES_USER,
+      database: process.env.POSTGRES_DB,
+      password: process.env.POSTGRES_PASSWORD,
+      ssl: getSSLValues(),
+    });
 
-  await client.connect();
+    await client.connect();
 
-  return client;
+    return client;
+  } catch (error) {
+    const serviceErrorObject = new ServiceError({
+      message: 'Erro ao estabelecer conexão com o banco de dados',
+      cause: error,
+    });
+    throw serviceErrorObject;
+  }
 }
 
 const database = {

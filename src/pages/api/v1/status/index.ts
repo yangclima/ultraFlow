@@ -1,8 +1,21 @@
-import type { StatusResponse } from '@/contracts/api/v1/status';
+import type { StatusGetResponse } from '@/contracts/api/v1/status';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import database from '@/infra/database';
 
-export async function GET() {
+import { createRouter } from 'next-connect';
+import controller from '@/infra/controller';
+
+const router = createRouter();
+
+router.get(getHandler);
+
+export default router.handler(controller.errorHandlers);
+
+async function getHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<StatusGetResponse>
+) {
   const updatedAt = new Date().toISOString();
 
   const version = await database.query('SHOW server_version');
@@ -16,7 +29,7 @@ export async function GET() {
   );
   const openedConnectionsResult = openedConnections.rows[0].count;
 
-  return Response.json({
+  res.status(200).json({
     updated_at: updatedAt,
     dependencies: {
       database: {
@@ -25,5 +38,5 @@ export async function GET() {
         opened_connections: openedConnectionsResult,
       },
     },
-  } satisfies StatusResponse);
+  });
 }

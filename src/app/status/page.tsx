@@ -1,9 +1,9 @@
 'use client';
 
-import type { StatusResponse } from '@/contracts/api/v1/status';
+import type { StatusGetResponse } from '@/contracts/api/v1/status';
 import { useQuery } from '@tanstack/react-query';
 
-async function fetchStatus(): Promise<StatusResponse> {
+async function fetchStatus(): Promise<StatusGetResponse> {
   const response = await fetch('/api/v1/status');
   const data = await response.json();
   return data;
@@ -16,7 +16,7 @@ function UpdatedAt() {
     refetchInterval: 2000,
   });
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <p>Loading...</p>;
   }
 
