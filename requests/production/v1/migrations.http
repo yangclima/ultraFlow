@@ -1,0 +1,71 @@
+﻿@baseUrl = http://ultraflow.yanlima.com
+@apiVersion = v1
+@json = application/json
+
+###############################################################################
+# API V1 - MIGRATIONS
+# Endpoint: /api/v1/migrations
+# Descricao: Lista migracoes pendentes e executa migracoes pendentes.
+# Metodos permitidos: GET, POST
+###############################################################################
+
+###
+# [MIGRATIONS] GET /api/v1/migrations - 200 OK
+# Dry-run: lista migracoes pendentes sem executar.
+# Exemplo de resposta:
+# [
+#   {
+#     "name": "1771449045889_placeholder",
+#     "path": "src/infra/migrations/1771449045889_placeholder.mjs",
+#     "timestamp": 1771449045889
+#   }
+# ]
+GET {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
+
+###
+# [MIGRATIONS] POST /api/v1/migrations - 201 Created | 200 OK
+# Executa migracoes pendentes.
+# - 201: uma ou mais migracoes executadas
+# - 200: nenhuma migracao para executar
+# Corpo da resposta (ambos os casos): MigrationPublicObject[]
+POST {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
+Content-Type: {{json}}
+
+###
+# [MIGRATIONS] Resposta de erro para metodos nao permitidos - 405 MethodNotAllowedError
+# Exemplo de resposta:
+# {
+#   "name": "MethodNotAllowedError",
+#   "message": "Metodo HTTP nao permitido para este endpoint",
+#   "action": "Verifique se o metodo HTTP enviado e valido para esta rota",
+#   "status_code": 405
+# }
+
+###
+# [MIGRATIONS] PUT /api/v1/migrations - 405 Method Not Allowed
+PUT {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
+Content-Type: {{json}}
+
+###
+# [MIGRATIONS] PATCH /api/v1/migrations - 405 Method Not Allowed
+PATCH {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
+Content-Type: {{json}}
+
+###
+# [MIGRATIONS] DELETE /api/v1/migrations - 405 Method Not Allowed
+DELETE {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
+
+###
+# [MIGRATIONS] HEAD /api/v1/migrations - 405 Method Not Allowed
+HEAD {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
+
+###
+# [MIGRATIONS] OPTIONS /api/v1/migrations - 405 Method Not Allowed
+OPTIONS {{baseUrl}}/api/{{apiVersion}}/migrations
+Accept: {{json}}
