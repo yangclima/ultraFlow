@@ -6,7 +6,7 @@
 # API V1 - MIGRATIONS
 # Endpoint: /api/v1/migrations
 # Descricao: Lista migracoes pendentes e executa migracoes pendentes.
-# Metodos permitidos: GET, POST
+# Metodos permitidos: GET, HEAD, POST
 ###############################################################################
 
 ###
@@ -61,7 +61,7 @@ DELETE {{baseUrl}}/api/{{apiVersion}}/migrations
 Accept: {{json}}
 
 ###
-# [MIGRATIONS] HEAD /api/v1/migrations - 405 Method Not Allowed
+# [MIGRATIONS] HEAD /api/v1/migrations - 200 OK
 HEAD {{baseUrl}}/api/{{apiVersion}}/migrations
 Accept: {{json}}
 

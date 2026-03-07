@@ -6,7 +6,7 @@
 # API V1 - STATUS
 # Endpoint: /api/v1/status
 # Descricao: Retorna o status da aplicacao e da dependencia de banco.
-# Metodos permitidos: GET
+# Metodos permitidos: GET, HEAD
 ###############################################################################
 
 ###
@@ -59,7 +59,7 @@ DELETE {{baseUrl}}/api/{{apiVersion}}/status
 Accept: {{json}}
 
 ###
-# [STATUS] HEAD /api/v1/status - 405 Method Not Allowed
+# [STATUS] HEAD /api/v1/status - 200 OK
 HEAD {{baseUrl}}/api/{{apiVersion}}/status
 Accept: {{json}}
 
