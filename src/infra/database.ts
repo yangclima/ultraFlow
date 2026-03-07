@@ -1,8 +1,8 @@
-import { Client } from 'pg';
+import { Client, QueryResult } from 'pg';
 import { ServiceError } from './errors';
 
-async function query(queryObject: string) {
-  let client;
+async function query(queryObject: string): Promise<QueryResult> {
+  let client: Client | undefined = undefined;
 
   try {
     client = await getNewClient();
