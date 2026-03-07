@@ -11,6 +11,7 @@ async function query(queryObject: string): Promise<QueryResult> {
     return result;
   } catch (error) {
     const serviceErrorObject = new ServiceError({
+      serviceName: 'Database',
       message: 'Erro ao realizar consulta no banco de dados',
       cause: error,
     });
@@ -49,6 +50,7 @@ async function getNewClient() {
     return client;
   } catch (error) {
     const serviceErrorObject = new ServiceError({
+      serviceName: 'Database',
       message: 'Erro ao estabelecer conexão com o banco de dados',
       cause: error,
     });

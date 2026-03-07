@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { InternalServerError, MethodNotAllowedError } from './errors';
+import {
+  InternalServerError,
+  MethodNotAllowedError,
+  ServiceError,
+} from './errors';
 import { ErrorResponse } from '@/contracts/api/v1/error';
 
 async function onNoMatchHandler(
@@ -17,6 +21,15 @@ function onErrorHandler(
   req: NextApiRequest,
   res: NextApiResponse<ErrorResponse>
 ) {
+  if (error instanceof ServiceError) {
+    const publicErrorObject = new ServiceError({
+      cause: error,
+    });
+
+    res.status(publicErrorObject.statusCode).json(publicErrorObject.toJSON());
+    return;
+  }
+
   const publicErrorObject = new InternalServerError({
     cause: error,
   });

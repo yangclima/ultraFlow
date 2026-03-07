@@ -1,6 +1,7 @@
 import { runner } from 'node-pg-migrate';
 import path from 'node:path';
 import database from './database';
+import { ServiceError } from './errors';
 
 async function getPendingMigrations() {
   const dbClient = await database.getNewClient();
@@ -13,6 +14,13 @@ async function getPendingMigrations() {
       migrationsTable: 'pgmigrations',
       log: () => {},
     });
+  } catch (error) {
+    const serviceErrorObject = new ServiceError({
+      serviceName: 'Migrations',
+      message: 'Erro ao obter as migrações pendentes',
+      cause: error,
+    });
+    throw serviceErrorObject;
   } finally {
     dbClient.end();
   }
@@ -29,6 +37,13 @@ async function runPendingMigrations() {
       migrationsTable: 'pgmigrations',
       log: console.log,
     });
+  } catch (error) {
+    const serviceErrorObject = new ServiceError({
+      serviceName: 'Migrations',
+      message: 'Erro ao rodar as migrações pendentes',
+      cause: error,
+    });
+    throw serviceErrorObject;
   } finally {
     dbClient.end();
   }

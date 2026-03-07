@@ -3,4 +3,5 @@ export type ErrorResponse = {
   message: string;
   action: string;
   status_code: number;
+  [key: string]: unknown;
 };

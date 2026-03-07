@@ -45,13 +45,23 @@ export class MethodNotAllowedError extends Error {
 export class ServiceError extends Error {
   public statusCode: number;
   public action: string;
+  public serviceName: string;
 
-  constructor({ cause, message }: { cause?: Error; message?: string }) {
+  constructor({
+    cause,
+    message,
+    serviceName,
+  }: {
+    cause?: Error;
+    message?: string;
+    serviceName?: string;
+  }) {
     super(message || 'Serviço indisponível', { cause });
 
     this.name = 'ServiceError';
     this.statusCode = 503;
     this.action = 'Verifique se o serviço está disponível';
+    this.serviceName = serviceName || 'unknown';
   }
 
   toJSON(): ErrorResponse {
@@ -60,6 +70,7 @@ export class ServiceError extends Error {
       message: this.message,
       status_code: this.statusCode,
       action: this.action,
+      service_name: this.serviceName,
     };
   }
 }
