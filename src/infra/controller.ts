@@ -4,6 +4,7 @@ import {
   InternalServerError,
   MethodNotAllowedError,
   ServiceError,
+  ValidationError,
 } from './errors';
 import { ErrorResponse } from '@/contracts/api/v1/error';
 
@@ -22,11 +23,12 @@ function onErrorHandler(
   res: NextApiResponse<ErrorResponse>
 ) {
   if (error instanceof ServiceError) {
-    const publicErrorObject = new ServiceError({
-      cause: error,
-    });
+    res.status(error.statusCode).json(error.toJSON());
+    return;
+  }
 
-    res.status(publicErrorObject.statusCode).json(publicErrorObject.toJSON());
+  if (error instanceof ValidationError) {
+    res.status(error.statusCode).json(error.toJSON());
     return;
   }
 
