@@ -3,16 +3,20 @@ import path from 'node:path';
 import database from './database';
 import { ServiceError } from './errors';
 
+const defaultMigrationOptions = {
+  dryRun: true,
+  dir: path.join(process.cwd(), 'src', 'infra', 'migrations'),
+  direction: 'up',
+  log: () => {},
+  migrationsTable: 'pgmigrations',
+} as const;
+
 async function getPendingMigrations() {
   const dbClient = await database.getNewClient();
   try {
     return await runner({
+      ...defaultMigrationOptions,
       dbClient,
-      dryRun: true,
-      dir: path.join(process.cwd(), 'src', 'infra', 'migrations'),
-      direction: 'up',
-      migrationsTable: 'pgmigrations',
-      log: () => {},
     });
   } catch (error) {
     const serviceErrorObject = new ServiceError({
@@ -30,12 +34,9 @@ async function runPendingMigrations() {
   const dbClient = await database.getNewClient();
   try {
     return await runner({
+      ...defaultMigrationOptions,
       dbClient,
       dryRun: false,
-      dir: path.join(process.cwd(), 'src', 'infra', 'migrations'),
-      direction: 'up',
-      migrationsTable: 'pgmigrations',
-      log: console.log,
     });
   } catch (error) {
     const serviceErrorObject = new ServiceError({
