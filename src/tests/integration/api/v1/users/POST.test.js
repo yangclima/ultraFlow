@@ -1,5 +1,7 @@
 import { version as uuidVersion } from 'uuid';
 import orchestrator from '@/tests/orchestrator';
+import user from '@/models/user';
+import password from '@/infra/password';
 import { expect, test, describe, beforeAll } from 'vitest';
 
 beforeAll(async () => {
@@ -17,8 +19,8 @@ describe('POST /api/v1/users', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: 'filipedeschamps',
-          email: 'contato@curso.dev',
+          username: 'yangclima',
+          email: 'yangclima@email.com',
           password: 'senha123',
         }),
       });
@@ -29,9 +31,9 @@ describe('POST /api/v1/users', () => {
 
       expect(responseBody).toEqual({
         id: responseBody.id,
-        username: 'filipedeschamps',
-        email: 'contato@curso.dev',
-        password: 'senha123',
+        username: 'yangclima',
+        email: 'yangclima@email.com',
+        password: responseBody.password,
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
@@ -39,6 +41,20 @@ describe('POST /api/v1/users', () => {
       expect(uuidVersion(responseBody.id)).toBe(4);
       expect(Date.parse(responseBody.created_at)).not.toBeNaN();
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
+
+      const userInDatabase = await user.findOneByUsername('yangclima');
+      const correctPasswordMatch = await password.compare(
+        'senha123',
+        userInDatabase.password
+      );
+
+      const incorrectPasswordMatch = await password.compare(
+        'SenhaErrada',
+        userInDatabase.password
+      );
+
+      expect(correctPasswordMatch).toBe(true);
+      expect(incorrectPasswordMatch).toBe(false);
     });
 
     test("With duplicated 'email'", async () => {
@@ -49,7 +65,7 @@ describe('POST /api/v1/users', () => {
         },
         body: JSON.stringify({
           username: 'emailduplicado1',
-          email: 'duplicado@curso.dev',
+          email: 'duplicado@email.com',
           password: 'senha123',
         }),
       });
@@ -63,7 +79,7 @@ describe('POST /api/v1/users', () => {
         },
         body: JSON.stringify({
           username: 'emailduplicado2',
-          email: 'Duplicado@curso.dev',
+          email: 'duplicado@email.com',
           password: 'senha123',
         }),
       });
@@ -88,7 +104,7 @@ describe('POST /api/v1/users', () => {
         },
         body: JSON.stringify({
           username: 'usernameduplicado',
-          email: 'usernameduplicado1@curso.dev',
+          email: 'usernameduplicado1@email.com',
           password: 'senha123',
         }),
       });
@@ -102,7 +118,7 @@ describe('POST /api/v1/users', () => {
         },
         body: JSON.stringify({
           username: 'UsernameDuplicado',
-          email: 'usernameduplicado2@curso.dev',
+          email: 'usernameduplicado2@email.com',
           password: 'senha123',
         }),
       });

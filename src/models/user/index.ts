@@ -1,6 +1,7 @@
 import type { CreateUserDTO, User } from './types';
 
 import database from '@/infra/database';
+import password from '@/infra/password';
 import { ValidationError, NotFoundError } from '@/infra/errors';
 
 async function findOneByUsername(username: string): Promise<User> {
@@ -37,9 +38,18 @@ async function findOneByUsername(username: string): Promise<User> {
 async function create(userInputValues: CreateUserDTO): Promise<User> {
   await validateUniqueEmail(userInputValues.email);
   await validateUniqueUsername(userInputValues.username);
+  await hashPasswordInObject(userInputValues);
 
   const newUser = await runInsertQuery(userInputValues);
   return newUser;
+
+  async function hashPasswordInObject(
+    userInputValues: CreateUserDTO
+  ): Promise<CreateUserDTO> {
+    const hashedPassword = await password.hash(userInputValues.password);
+    userInputValues.password = hashedPassword;
+    return userInputValues;
+  }
 
   async function validateUniqueEmail(email: string) {
     const results = await database.query({
