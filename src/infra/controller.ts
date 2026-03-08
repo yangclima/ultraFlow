@@ -25,16 +25,19 @@ function onErrorHandler(
 ) {
   if (error instanceof ServiceError) {
     res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
     return;
   }
 
   if (error instanceof ValidationError) {
     res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
     return;
   }
 
   if (error instanceof NotFoundError) {
     res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
     return;
   }
 

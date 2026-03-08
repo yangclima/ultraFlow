@@ -4,6 +4,12 @@ export type CreateUserDTO = {
   password: string;
 };
 
+export type UpdateUserDTO = {
+  email: string;
+  username: string;
+  password: string;
+};
+
 export type User = {
   id: string;
   username: string;

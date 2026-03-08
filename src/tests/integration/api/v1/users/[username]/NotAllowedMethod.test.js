@@ -9,7 +9,7 @@ beforeAll(async () => {
 describe('NotAllowedMethod /api/v1/users/[username]', () => {
   describe('Any user', () => {
     test('Attempting to make a request using an Not Allowed method.', async () => {
-      const notAllowedMethods = ['POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'];
+      const notAllowedMethods = ['POST', 'PUT', 'DELETE', 'OPTIONS'];
 
       for (const method of notAllowedMethods) {
         const response = await fetch(

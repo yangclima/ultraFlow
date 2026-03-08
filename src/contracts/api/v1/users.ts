@@ -21,3 +21,18 @@ export type UsersUsernameGetResponse = {
   created_at: Date;
   updated_at: Date;
 };
+
+export type UsersUsernamePatchRequest = {
+  username: string;
+  email: string;
+  password: string;
+};
+
+export type UsersUsernamePatchResponse = {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+};
