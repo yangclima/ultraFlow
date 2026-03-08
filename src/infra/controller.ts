@@ -45,6 +45,7 @@ function onErrorHandler(
   }
 
   if (error instanceof UnauthorizedError) {
+    clearSessionCookie(res);
     res.status(error.statusCode).json(error.toJSON());
     console.error(error);
     return;
