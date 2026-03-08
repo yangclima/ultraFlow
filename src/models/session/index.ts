@@ -133,6 +133,38 @@ async function renew(sessionId: string): Promise<Session> {
   }
 }
 
+/**
+ * Expires a session by its ID.
+ *
+ * Updates the session's expiration date to be in the past, effectively expiring it.
+ *
+ * @param sessionId
+ * @returns A promise that resolves to the expired {@link Session} object.
+ */
+async function expireById(sessionId: string): Promise<Session> {
+  const expiredSession = await runUpdateQuery(sessionId);
+  return expiredSession;
+
+  async function runUpdateQuery(sessionIdToExpire: string): Promise<Session> {
+    const results = await database.query({
+      text: `
+      UPDATE
+        sessions
+      SET
+        expires_at = expires_at - interval '1 year',
+        updated_at = timezone('UTC', now())
+      WHERE
+        id = $1
+      RETURNING
+        *
+      ;`,
+      values: [sessionIdToExpire],
+    });
+
+    return results.rows[0];
+  }
+}
+
 /** Manage the user session. */
 const session = {
   /** Duration of a session in milliseconds. Equivalent to 30 days. */
@@ -140,6 +172,7 @@ const session = {
   findOneValidByToken,
   create,
   renew,
+  expireById,
 } as const;
 
 export default session;
