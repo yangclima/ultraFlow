@@ -4,6 +4,7 @@ import migrationsRunner from '@/infra/migrations-runner';
 import user from '@/models/user';
 import { faker } from '@faker-js/faker';
 import type { CreateUserDTO, User } from '@/models/user/types';
+import session from '@/models/session';
 
 async function waitForAllServices() {
   await waitForWebServer();
@@ -41,11 +42,16 @@ async function createUser(userObject: CreateUserDTO): Promise<User> {
   });
 }
 
+async function createSession(userId) {
+  return await session.create(userId);
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
   runPendingMigrations,
   createUser,
+  createSession,
 };
 
 export default orchestrator;

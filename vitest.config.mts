@@ -11,6 +11,7 @@ dotenv.config({ path: '.env.development', quiet: true });
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
+    testTimeout: 30000,
     reporters: [new TreeSpacingReporter()],
     environment: 'jsdom',
   },

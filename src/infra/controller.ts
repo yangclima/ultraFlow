@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import * as cookie from 'cookie';
 
 import {
   InternalServerError,
@@ -9,6 +10,7 @@ import {
   ValidationError,
 } from './errors';
 import { ErrorResponse } from '@/contracts/api/v1/error';
+import session from '@/models/session';
 
 async function onNoMatchHandler(
   req: NextApiRequest,
@@ -57,11 +59,25 @@ function onErrorHandler(
   res.status(publicErrorObject.statusCode).json(publicErrorObject.toJSON());
 }
 
+async function setSessionCookie(sessionToken: string, res: NextApiResponse) {
+  const expirationTimeInSeconds = session.EXPIRATION_TIME_IN_MILISECONDS / 1000;
+
+  const setCookie = cookie.serialize('session_id', sessionToken, {
+    path: '/',
+    maxAge: expirationTimeInSeconds,
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+  });
+
+  res.setHeader('Set-Cookie', setCookie);
+}
+
 const controller = {
   errorHandlers: {
     onNoMatch: onNoMatchHandler,
     onError: onErrorHandler,
   },
+  setSessionCookie,
 };
 
 export default controller;
