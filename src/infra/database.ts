@@ -25,7 +25,6 @@ async function query(queryObject: DatabaseQueryObject): Promise<QueryResult> {
 
     throw serviceErrorObject;
   } finally {
-    console.log('Fechando conexão com o banco de dados');
     client?.end();
   }
 }
