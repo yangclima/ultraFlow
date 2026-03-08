@@ -6,15 +6,18 @@ beforeAll(async () => {
   await orchestrator.clearDatabase();
 });
 
-describe('NotAllowedMethod /api/v1/status', () => {
+describe('NotAllowedMethod /api/v1/users/[username]', () => {
   describe('Any user', () => {
     test('Attempting to make a request using an Not Allowed method.', async () => {
-      const notAllowedMethods = ['POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'];
+      const notAllowedMethods = ['POST', 'PUT', 'DELETE', 'OPTIONS'];
 
       for (const method of notAllowedMethods) {
-        const response = await fetch('http://localhost:3000/api/v1/status', {
-          method: method,
-        });
+        const response = await fetch(
+          'http://localhost:3000/api/v1/users/username',
+          {
+            method: method,
+          }
+        );
 
         expect(response.status).toBe(405);
 

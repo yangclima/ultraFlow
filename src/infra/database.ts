@@ -1,7 +1,14 @@
 import { Client, QueryResult } from 'pg';
 import { ServiceError } from './errors';
 
-async function query(queryObject: string): Promise<QueryResult> {
+type DatabaseQueryObject =
+  | {
+      text: string;
+      values: unknown[];
+    }
+  | string;
+
+async function query(queryObject: DatabaseQueryObject): Promise<QueryResult> {
   let client: Client | undefined = undefined;
 
   try {
@@ -18,7 +25,6 @@ async function query(queryObject: string): Promise<QueryResult> {
 
     throw serviceErrorObject;
   } finally {
-    console.log('Fechando conexão com o banco de dados');
     client?.end();
   }
 }

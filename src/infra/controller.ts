@@ -3,7 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import {
   InternalServerError,
   MethodNotAllowedError,
+  NotFoundError,
   ServiceError,
+  ValidationError,
 } from './errors';
 import { ErrorResponse } from '@/contracts/api/v1/error';
 
@@ -22,11 +24,20 @@ function onErrorHandler(
   res: NextApiResponse<ErrorResponse>
 ) {
   if (error instanceof ServiceError) {
-    const publicErrorObject = new ServiceError({
-      cause: error,
-    });
+    res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
+    return;
+  }
 
-    res.status(publicErrorObject.statusCode).json(publicErrorObject.toJSON());
+  if (error instanceof ValidationError) {
+    res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
+    return;
+  }
+
+  if (error instanceof NotFoundError) {
+    res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
     return;
   }
 
