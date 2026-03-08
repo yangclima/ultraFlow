@@ -1,16 +1,14 @@
+import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import TreeSpacingReporter from './src/tests/reporter';
 import path from 'path';
 
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '.env.development', quiet: true });
-
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
+    env: loadEnv('development', process.cwd(), ''),
     testTimeout: 30000,
     reporters: [new TreeSpacingReporter()],
     environment: 'jsdom',
