@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import TreeSpacingReporter from './src/tests/reporter';
-import path from 'path/win32';
+import path from 'path';
 
 import dotenv from 'dotenv';
 
@@ -15,8 +15,9 @@ export default defineConfig({
     environment: 'jsdom',
   },
   resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.join(process.cwd(), 'src'),
     },
   },
 });
