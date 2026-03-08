@@ -5,7 +5,7 @@ export type CreateUserDTO = {
 };
 
 export type User = {
-  id: number;
+  id: string;
   username: string;
   email: string;
   password: string;

@@ -5,13 +5,16 @@ export type UsersPostRequest = {
 };
 
 export type UsersPostResponse = {
-  id: number;
+  id: string;
   username: string;
   email: string;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type UsersUsernameGetResponse = {
-  id: number;
+  id: string;
   username: string;
   email: string;
   password: string;
