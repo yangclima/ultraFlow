@@ -5,6 +5,7 @@ import {
   MethodNotAllowedError,
   NotFoundError,
   ServiceError,
+  UnauthorizedError,
   ValidationError,
 } from './errors';
 import { ErrorResponse } from '@/contracts/api/v1/error';
@@ -36,6 +37,12 @@ function onErrorHandler(
   }
 
   if (error instanceof NotFoundError) {
+    res.status(error.statusCode).json(error.toJSON());
+    console.error(error);
+    return;
+  }
+
+  if (error instanceof UnauthorizedError) {
     res.status(error.statusCode).json(error.toJSON());
     console.error(error);
     return;

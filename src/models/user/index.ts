@@ -35,6 +35,37 @@ async function findOneByUsername(username: string): Promise<User> {
   }
 }
 
+async function findOneByEmail(email: string): Promise<User> {
+  const userFound = await runSelectQuery(email);
+
+  return userFound;
+
+  async function runSelectQuery(email: string) {
+    const results = await database.query({
+      text: `
+        SELECT
+          *
+        FROM
+          users
+        WHERE
+          LOWER(email) = LOWER($1)
+        LIMIT
+          1
+        ;`,
+      values: [email],
+    });
+
+    if (results.rowCount === 0) {
+      throw new NotFoundError({
+        message: 'O email informado não foi encontrado no sistema.',
+        action: 'Verifique se o email está digitado corretamente.',
+      });
+    }
+
+    return results.rows[0];
+  }
+}
+
 async function create(userInputValues: CreateUserDTO): Promise<User> {
   await validateUniqueEmail(userInputValues.email);
   await validateUniqueUsername(userInputValues.username);
@@ -169,6 +200,7 @@ async function validateUniqueUsername(username: string) {
 
 const user = {
   findOneByUsername,
+  findOneByEmail,
   create,
   update,
 };

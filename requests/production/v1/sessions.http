@@ -1,0 +1,74 @@
+@baseUrl = http://ultraflow.yanlima.com
+@apiVersion = v1
+@json = application/json
+
+###############################################################################
+# API V1 - SESSIONS
+# Endpoint: /api/v1/sessions
+# Descricao: Permite criar sessões de usuário, incluindo persistência no banco
+# de dados e nos cookies do navegador.
+# Metodos permitidos: POST
+###############################################################################
+
+###
+# [SESSIONS] POST /api/v1/sessions - 201 Created
+# Exemplo de resposta:
+# {
+#   "id": "dc349abf-f18c-44b9-a03d-a2d48dad486a",
+#   "user_id": "3d517491-9256-4836-af81-06a652682de2",
+#   "expires_at": "2026-04-07T12:01:43.987Z",
+#   "token": "charb149a48e48abaa173a6ddbe80378de24acdc0353a85df840e24952a",
+#   "created_at": "2026-03-08T12:01:44.002Z",
+#   "updated_at": "2026-03-08T12:01:44.002Z"
+# }
+POST {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
+Content-Type: {{json}}
+
+{
+  "email": "yangclima@email.com",
+  "password": "senha123"
+}
+
+###
+# [SESSIONS] Resposta de erro para metodos nao permitidos - 405 MethodNotAllowedError
+# Exemplo de resposta:
+# {
+#   "name": "MethodNotAllowedError",
+#   "message": "Metodo HTTP nao permitido para este endpoint",
+#   "action": "Verifique se o metodo HTTP enviado e valido para esta rota",
+#   "status_code": 405
+# }
+
+###
+# [SESSIONS] GET /api/v1/sessions - 405 Method Not Allowed
+GET {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
+
+
+###
+# [SESSIONS] PUT /api/v1/sessions - 405 Method Not Allowed
+PUT {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
+Content-Type: {{json}}
+
+###
+# [SESSIONS] PATCH /api/v1/sessions - 405 Method Not Allowed
+PATCH {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
+Content-Type: {{json}}
+
+###
+# [SESSIONS] DELETE /api/v1/sessions - 405 Method Not Allowed
+DELETE {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
+
+###
+# [SESSIONS] HEAD /api/v1/sessions - 405 OK
+HEAD {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
+
+###
+# [SESSIONS] OPTIONS /api/v1/sessions - 405 Method Not Allowed
+OPTIONS {{baseUrl}}/api/{{apiVersion}}/sessions
+Accept: {{json}}
